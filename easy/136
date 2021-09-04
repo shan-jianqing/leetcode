@@ -1,0 +1,23 @@
+给定一个非空整数数组，除了某个元素只出现一次以外，其余每个元素均出现两次。找出那个只出现了一次的元素。
+
+说明：
+
+你的算法应该具有线性时间复杂度。 你可以不使用额外空间来实现吗？
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/single-number
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+源码：
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+       return reduce(lambda x, y:x^y, nums)
+
+分析：
+一.异或运算具有如下性质：1.任何数与0异或，结果仍为原数
+                    2.任何数与自生运算，结果为0
+                    3.异或满足交换律与结合律
+ 
+ 二.reduce函数将后面的迭代器先进行1，2两个数作用，接着依次与后面数作用
+
+

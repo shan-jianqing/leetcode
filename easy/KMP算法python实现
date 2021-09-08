@@ -1,0 +1,44 @@
+源码：
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        # KMP Algorithm
+        # txt: original , pat: pattern
+        def KMPpreprocess(pat):
+            i, length, n = 1, 0, len(pat)   # j == length
+            lps = [0] * n   # 构建next数组
+            while i < n:
+                if pat[i] == pat[length]:
+                    length += 1
+                    lps[i] = length    # 相等时记录j
+                    i += 1
+                elif length:
+                    length = lps[length - 1]  # 不相等时，但j存在，j指向next数组上一个
+                else:
+                    lps[i] = 0  # j == 0时，i指向下一个，next数组赋值0
+                    i += 1
+            return lps
+
+        def KMPsearch(txt, pat):
+            m, n = len(txt), len(pat)
+            if not n:
+                return 0
+            lps = KMPpreprocess(pat)
+            i = j = 0
+            while i < m:
+                if txt[i] == pat[j]:  
+                    i += 1
+                    j += 1
+                if j == n:  
+                    return i - j
+                if txt[i] != pat[j]:  #如果不相等时，j>0,j指向next数组的上一项，j == 0时，i+1
+                    if j:
+                        j = lps[j - 1]
+                    else:
+                        i += 1
+            return -1
+
+        return KMPsearch(haystack, needle)
+
+
+a = Solution()
+print(a.strStr('hello', 'll'))

@@ -1,0 +1,38 @@
+'''
+以寻找乱序列表中第k小元素为例
+'''
+
+import random
+
+
+L = list(map(int, input().split(' ')))
+K = int(input())
+
+
+def findKthSmallest(nums, k):
+    # 对列表重新排序，避免出现最坏情况
+    random.shuffle(nums)
+    return quickSelect(nums, 0, len(nums)-1, k)
+
+
+def quickSelect(arr, start, end, k):
+    if start < end:
+        pivot = arr[end]
+        j = start
+        for i in range(start, end):
+            if arr[i] < pivot:
+                arr[j], arr[i] = arr[i], arr[j]
+                j += 1
+        arr[j], arr[end] = arr[end], arr[j]
+        if j == k - 1:
+            return arr[j]
+        elif j < k - 1:
+            return quickSelect(arr, j+1, end, k)
+        else:
+            return quickSelect(arr, start, j-1, k)
+
+
+print(findKthSmallest(L, K))
+
+# 由快速排序的划分情况可知，对于某个基准值a[q]，q的左端元素都小于它，右端元素都大于它，若q对于k，则答案即为a[q]
+# 否则就对左右两端的划分递归寻找
